@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přijaté zprávy | Knihovna</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="navbar-container">
+
+        <a href="dashboard.html" class="navbar-brand">📚 Knihovna</a>
+
+        <ul class="navbar-menu">
+            <li><a href="#">Knihy</a></li>
+            <li><a href="#">Rezervace</a></li>
+            <li><a href="inbox.html">Zprávy</a></li>
+            <li><a href="books.html">Administrace</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="#">Profil</a></li>
+            <li><a href="#">Odhlásit</a></li>
+        </ul>
+
+    </div>
+</nav>
+
+<main>
+    <div class="container">
+
+        <h1 class="page-title">Zprávy</h1>
+
+        <div class="message-navigation">
+
+            <a
+                href="inbox.html"
+                class="btn btn-primary"
+            >
+                Přijaté zprávy
+            </a>
+
+            <a
+                href="sent.html"
+                class="btn btn-secondary"
+            >
+                Odeslané zprávy
+            </a>
+
+            <a
+                href="new.html"
+                class="btn btn-success"
+            >
+                + Nová zpráva
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>Přijaté zprávy</h2>
+
+            <div class="message-item unread">
+
+                <div>
+                    <strong>Jan Novák</strong>
+                    <p>Dotaz na rezervaci knihy</p>
+                </div>
+
+                <span class="message-date">
+                    12. 10. 2026 15:45
+                </span>
+
+            </div>
+
+
+            <div class="message-item">
+
+                <div>
+                    <strong>Eva Malá</strong>
+                    <p>Vrácení knihy</p>
+                </div>
+
+                <span class="message-date">
+                    11. 10. 2026 10:20
+                </span>
+
+            </div>
+
+
+            <div class="message-item unread">
+
+                <div>
+                    <strong>Petr Svoboda</strong>
+                    <p>Dostupnost knihy</p>
+                </div>
+
+                <span class="message-date">
+                    10. 10. 2026 17:10
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

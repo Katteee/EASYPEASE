@@ -1,3 +1,15 @@
+
+<?php
+require_once __DIR__ . '/../includes/auth_check.php';
+
+require_login();
+
+if (($_SESSION['role'] ?? '') !== 'admin') {
+    http_response_code(403);
+    exit('Přístup odepřen.');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="cs">
 

@@ -1,76 +1,26 @@
-<!DOCTYPE html>
-<html lang="cs">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Zprávy | Knihovna</title>
-
-    <link rel="stylesheet" href="../css/style.css">
-</head>
-
-<body>
-
-<?php include '../includes/navbar.php'; ?>
-
-<main>
-    <div class="container">
-
-        <h1 class="page-title">Zprávy</h1>
-
-        <div class="message-navigation">
-
-            <a href="inbox.php" class="btn btn-primary">
-                Přijaté zprávy
-            </a>
-
-            <a href="sent.php" class="btn btn-secondary">
-                Odeslané zprávy
-            </a>
-
-            <a href="new.php" class="btn btn-success">
-                + Nová zpráva
-            </a>
-
-        </div>
-
-
-        <div class="card">
-
-            <h2>Přijaté zprávy</h2>
-
-            <div class="message-item message-unread">
-
-                <div>
-                    <strong>Jan Novák</strong>
-                    <p>Dotaz na rezervaci knihy</p>
-                </div>
-
-                <span class="message-date">
-                    12. 10. 2026 14:30
-                </span>
-
-            </div>
-
-
-            <div class="message-item">
-
-                <div>
-                    <strong>Eva Malá</strong>
-                    <p>Vrácení knihy</p>
-                </div>
-
-                <span class="message-date">
-                    11. 10. 2026 09:15
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-</main>
-
-</body>
-</html>
+<?php
+require_once __DIR__ . '/common.php';
+$userId = (int)$_SESSION['user_id'];
+$messages = [];
+$error = '';
+try {
+    $stmt = $pdo->prepare('SELECT m.id, m.subject, m.is_read, m.created_at, u.first_name, u.last_name, u.login FROM messages m JOIN users u ON u.id = m.sender_id WHERE m.receiver_id = ? ORDER BY m.created_at DESC, m.id DESC');
+    $stmt->execute([$userId]);
+    $messages = $stmt->fetchAll();
+} catch (PDOException $ex) {
+    error_log((string)$ex);
+    $error = 'Přijaté zprávy se nepodařilo načíst.';
+}
+msg_header('Přijaté zprávy', 'inbox');
+if ($error): ?><div class="alert alert-error" role="alert"><?= msg_h($error) ?></div><?php endif; ?>
+<div class="card"><h2>Přijaté zprávy</h2>
+<?php if (!$messages && !$error): ?><p>Zatím nemáte žádné přijaté zprávy.</p><?php endif; ?>
+<?php foreach ($messages as $message): ?>
+<a class="message-item <?= !$message['is_read'] ? 'message-unread' : '' ?>" href="detail.php?id=<?= (int)$message['id'] ?>">
+<div><strong><?= msg_h($message['first_name'] . ' ' . $message['last_name']) ?></strong>
+<p><?= msg_h($message['subject']) ?></p>
+<span class="badge <?= $message['is_read'] ? 'badge-success' : 'badge-warning' ?>"><?= $message['is_read'] ? 'Přečteno' : 'Nepřečteno' ?></span></div>
+<span class="message-date"><?= msg_h(msg_date($message['created_at'])) ?></span>
+</a>
+<?php endforeach; ?></div>
+<?php msg_footer(); ?>

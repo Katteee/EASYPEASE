@@ -1,0 +1,8 @@
+-- Existing schema already has users.role and messages.is_read.
+-- Create the initial admin by registering a normal account first, then run:
+-- UPDATE users SET role = 'admin' WHERE login = 'YOUR_REGISTERED_LOGIN';
+-- Never put a shared/default admin password in SQL or source control.
+-- Generate a strong key with: php -r "echo bin2hex(random_bytes(32)), PHP_EOL;"
+-- Configure APP_MESSAGE_KEY on the server and preserve it securely.
+-- Existing plaintext messages remain readable for compatibility; new messages are encrypted.
+-- For stronger security, encrypt existing messages using a controlled migration.

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/common.php';
+require_once __DIR__ . '/../includes/message_crypto.php';
 $_SESSION['messages_csrf'] ??= bin2hex(random_bytes(32));
 $userId = (int)$_SESSION['user_id'];
 $errors = [];
@@ -37,12 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = 'Příjemce neexistuje.';
             } else {
                 $stmt = $pdo->prepare('INSERT INTO messages (sender_id, receiver_id, subject, body) VALUES (?, ?, ?, ?)');
-                $stmt->execute([$userId, $receiverId, $subject, $body]);
+                $stmt->execute([$userId, $receiverId, $subject, message_encrypt($body)]);
                 $_SESSION['message_notice'] = 'Zpráva byla úspěšně odeslána.';
                 header('Location: sent.php', true, 303);
                 exit;
             }
-        } catch (PDOException $ex) {
+        } catch (Throwable $ex) {
             error_log((string)$ex);
             $errors[] = 'Zprávu se nepodařilo odeslat.';
         }

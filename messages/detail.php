@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/common.php';
+require_once __DIR__ . '/../includes/message_crypto.php';
 $userId = (int)$_SESSION['user_id'];
 $id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 if ($id === false || $id === null) { http_response_code(400); exit('Neplatné ID zprávy.'); }
@@ -21,6 +22,7 @@ try {
     exit('Zprávu se nepodařilo načíst.');
 }
 if (!$message) { http_response_code(404); exit('Zpráva nebyla nalezena.'); }
+try { $message['body'] = message_decrypt($message['body']); } catch (Throwable $e) { error_log((string)$e); http_response_code(503); exit('Zprávu nelze dešifrovat.'); }
 $received = (int)$message['receiver_id'] === $userId;
 msg_header('Detail zprávy', $received ? 'inbox' : 'sent');
 ?>

@@ -1,13 +1,11 @@
-
 <?php
-require_once __DIR__ . '/../includes/auth_check.php';
-
-require_login();
-
-if (($_SESSION['role'] ?? '') !== 'admin') {
-    http_response_code(403);
-    exit('Přístup odepřen.');
-}
+require_once __DIR__ . '/../includes/admin_guard.php';
+$stats = [
+ 'users'=>(int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn(),
+ 'books'=>(int)$pdo->query('SELECT COUNT(*) FROM books')->fetchColumn(),
+ 'reservations'=>(int)$pdo->query("SELECT COUNT(*) FROM reservations WHERE status='active'")->fetchColumn(),
+ 'messages'=>(int)$pdo->query('SELECT COUNT(*) FROM messages WHERE is_read=0')->fetchColumn()
+];
 ?>
 
 <!DOCTYPE html>
@@ -35,22 +33,22 @@ if (($_SESSION['role'] ?? '') !== 'admin') {
 
             <div class="stat-card">
                 <h3>Počet uživatelů</h3>
-                <div class="stat-number">120</div>
+                <div class="stat-number"><?= $stats['users'] ?></div>
             </div>
 
             <div class="stat-card">
                 <h3>Počet knih</h3>
-                <div class="stat-number">350</div>
+                <div class="stat-number"><?= $stats['books'] ?></div>
             </div>
 
             <div class="stat-card">
                 <h3>Aktivní rezervace</h3>
-                <div class="stat-number">25</div>
+                <div class="stat-number"><?= $stats['reservations'] ?></div>
             </div>
 
             <div class="stat-card">
                 <h3>Nepřečtené zprávy</h3>
-                <div class="stat-number">12</div>
+                <div class="stat-number"><?= $stats['messages'] ?></div>
             </div>
 
         </div>

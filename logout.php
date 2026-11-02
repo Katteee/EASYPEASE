@@ -1,6 +1,8 @@
+
 <?php
-session_start();
-session_unset();
-session_destroy();
-header("Location: login.php");
-exit();
+require_once __DIR__ . '/includes/auth_check.php';
+
+destroy_user_session();
+
+header('Location: login.php');
+exit;

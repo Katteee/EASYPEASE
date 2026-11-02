@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['login']      = $user['login'];
             $_SESSION['role']       = $user['role'];
             $_SESSION['first_name'] = $user['first_name'];
+            $_SESSION['LAST_ACTIVITY'] = time();
 
             header("Location: profile.php");
             exit();

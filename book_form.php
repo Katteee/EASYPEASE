@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/../includes/auth_check.php';
-require_login();
-if (($_SESSION['role'] ?? '') !== 'admin') { http_response_code(403); exit('Přístup odepřen.'); }
-require_once __DIR__ . '/../config/db.php';
+// The book form is in the project root, not in admin/.
+// Verify the administrator role against the database.
+require_once __DIR__ . '/includes/admin_guard.php';
 function e($v): string { return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 $_SESSION['admin_books_csrf'] ??= bin2hex(random_bytes(32));
 $id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]) : null;
@@ -47,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $pdo->commit();
             $_SESSION['admin_books_notice'] = $editing ? 'Kniha byla upravena.' : 'Kniha byla přidána.';
-            header('Location: books.php', true, 303); exit;
+            header('Location: admin/books.php', true, 303); exit;
         } catch (DomainException $ex) {
             if ($pdo->inTransaction()) $pdo->rollBack(); $errors[] = $ex->getMessage();
         } catch (PDOException $ex) {
@@ -57,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $editing ? 'Upravit knihu' : 'Přidat knihu' ?> | Knihovna</title><link rel="stylesheet" href="../css/style.css"></head><body>
+<!DOCTYPE html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= $editing ? 'Upravit knihu' : 'Přidat knihu' ?> | Knihovna</title><link rel="stylesheet" href="css/style.css"></head><body>
 <?php include __DIR__ . '/../includes/navbar.php'; ?>
 <main><div class="container"><h1 class="page-title"><?= $editing ? 'Upravit knihu' : 'Přidat novou knihu' ?></h1>
 <?php foreach ($errors as $error): ?><div class="alert alert-error" role="alert"><?= e($error) ?></div><?php endforeach; ?>
@@ -66,4 +65,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="form-group"><label for="<?= $field ?>"><?= e($label) ?></label><input class="form-control" id="<?= $field ?>" name="<?= $field ?>" type="<?= in_array($field,['year_published','total_copies'],true) ? 'number' : 'text' ?>" <?= in_array($field,['title','author','total_copies'],true) ? 'required' : '' ?> <?= $field === 'total_copies' ? 'min="0"' : '' ?> value="<?= e($book[$field] ?? '') ?>"></div>
 <?php endforeach; ?>
 <div class="form-group"><label for="description">Popis</label><textarea class="form-control" id="description" name="description"><?= e($book['description'] ?? '') ?></textarea></div>
-<button class="btn btn-success" type="submit">Uložit knihu</button> <a class="btn btn-secondary" href="books.php">Zpět</a></form></div></div></main></body></html>
+<button class="btn btn-success" type="submit">Uložit knihu</button> <a class="btn btn-secondary" href="admin/books.php">Zpět</a></form></div></div></main></body></html>

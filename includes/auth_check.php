@@ -1,4 +1,3 @@
-
 <?php
 // Session security settings must be applied before session_start().
 if (session_status() === PHP_SESSION_NONE) {
@@ -38,6 +37,21 @@ function destroy_user_session(): void {
     session_destroy();
 }
 
+// Resolve login URL for both / and /EASYPEASE/ installations.
+function login_url(): string {
+    $root = str_replace('\\', '/', dirname(__DIR__));
+    $documentRoot = realpath($_SERVER['DOCUMENT_ROOT'] ?? '') ?: '';
+    $projectRoot = realpath($root) ?: $root;
+    if ($documentRoot !== '' && str_starts_with($projectRoot, rtrim($documentRoot, '/') . '/')) {
+        $relative = substr($projectRoot, strlen(rtrim($documentRoot, '/')));
+        return rtrim($relative, '/') . '/login.php';
+    }
+    if ($documentRoot !== '' && $projectRoot === $documentRoot) {
+        return '/login.php';
+    }
+    return '/login.php'; // Set the deployment base path if needed.
+}
+
 // Timeout after 20 minutes of inactivity.
 if (isset($_SESSION['user_id'])) {
     if (
@@ -45,7 +59,7 @@ if (isset($_SESSION['user_id'])) {
         time() - $_SESSION['LAST_ACTIVITY'] > 1200
     ) {
         destroy_user_session();
-        header('Location: /login.php?msg=timeout');
+        header('Location: ' . login_url() . '?msg=timeout');
         exit;
     }
 
@@ -55,7 +69,7 @@ if (isset($_SESSION['user_id'])) {
 // Protect pages that require authentication.
 function require_login(): void {
     if (!isset($_SESSION['user_id'])) {
-        header('Location: /login.php');
+        header('Location: ' . login_url());
         exit;
     }
 }

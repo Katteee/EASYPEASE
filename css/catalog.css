@@ -1,1 +1,38 @@
-.book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.book-card{display:flex;flex-direction:column;gap:12px;margin:0}.book-card .actions{margin-top:auto}.book-symbol{background:#eff6ff;border-radius:8px;padding:20px;font-size:40px;text-align:center}.muted{color:#64748b}.search-grid{display:grid;grid-template-columns:2fr 1fr auto auto;gap:16px;align-items:end}.search-grid label{display:block;font-weight:600;margin-bottom:6px}.book-meta{display:grid;grid-template-columns:140px 1fr;gap:10px;margin-bottom:25px}.book-meta dt{font-weight:600}.btn:disabled{opacity:.65;cursor:not-allowed}a:focus-visible,button:focus-visible{outline:3px solid #2563eb;outline-offset:3px}@media(max-width:700px){.search-grid{grid-template-columns:1fr}.book-meta{grid-template-columns:1fr}.book-meta dd{margin-bottom:10px}}
+.catalog-page .book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}
+.catalog-page .book-card{display:flex;flex-direction:column;gap:12px;margin:0;min-width:0}
+.catalog-page .book-card .actions{margin-top:auto}
+.catalog-page .book-symbol{background:#eff6ff;border-radius:8px;padding:20px;font-size:40px;text-align:center}
+.catalog-page .muted{color:#64748b}
+.catalog-page .search-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:end}
+.catalog-page .search-wide{grid-column:span 2}
+.catalog-page label{display:block;font-weight:600;margin-bottom:6px}
+.catalog-page .book-meta{display:grid;grid-template-columns:140px minmax(0,1fr);gap:10px;margin-bottom:25px}
+.catalog-page .book-meta dt{font-weight:600}
+.catalog-page .book-description{white-space:pre-line}
+.catalog-page .book-card h2,.catalog-page td,.catalog-page dd{overflow-wrap:anywhere}
+.catalog-page .btn:disabled{opacity:.65;cursor:not-allowed}
+.catalog-page a:focus-visible,.catalog-page button:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+.catalog-page .catalog-pagination{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px;margin-top:24px}
+.catalog-page .reservation-filters{display:flex;flex-wrap:wrap;align-items:end;gap:16px}
+.catalog-page .reservation-filters>div{flex:1;min-width:160px}
+.catalog-page .actions{align-items:center}
+.catalog-page .catalog-skip,.catalog-page .catalog-sr{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.catalog-page .catalog-skip:focus{position:fixed;top:8px;left:8px;width:auto;height:auto;clip-path:none;background:white;padding:12px;z-index:10}
+@media(max-width:900px){.catalog-page .search-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog-page .navbar-menu{flex-wrap:wrap}.catalog-page .navbar-container{max-width:100%}}
+@media(max-width:600px){
+.catalog-page .search-grid{grid-template-columns:minmax(0,1fr)}
+.catalog-page .search-wide{grid-column:auto}
+.catalog-page .book-meta{grid-template-columns:minmax(0,1fr)}
+.catalog-page .book-meta dd{margin-bottom:10px}
+.catalog-page .actions{align-items:stretch}
+.catalog-page .actions form{flex:1 1 150px}
+.catalog-page .actions .btn{width:100%}
+.catalog-page .navbar-menu{flex-direction:row;gap:2px}
+.catalog-page .navbar-menu a{padding:8px;font-size:14px}
+.catalog-page .reservation-table{padding:14px}
+.catalog-page .reservation-table table,.catalog-page .reservation-table tbody,.catalog-page .reservation-table tr,.catalog-page .reservation-table td{display:block;width:100%}
+.catalog-page .reservation-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.catalog-page .reservation-table tr{border-bottom:2px solid #cbd5e1;padding:12px 0}
+.catalog-page .reservation-table td{padding:8px 0;border:0}
+.catalog-page .reservation-table td::before{content:attr(data-label);display:block;font-weight:600;color:#64748b;font-size:13px}
+}
